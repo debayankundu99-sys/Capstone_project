@@ -1,0 +1,63 @@
+---
+# AWS Play
+- name: Configure AWS server
+  hosts: aws
+  become: yes
+
+  tasks:
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+
+    - name: Copy AWS index file
+      copy:
+        src: index-aws.html
+        dest: /var/www/html/index.html
+        mode: '0644'
+
+    - name: Start Nginx
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Check Nginx status
+      command: systemctl is-active nginx
+      register: nginx_status
+
+    - debug:
+        msg: "AWS Nginx status: {{ nginx_status.stdout }}"
+
+
+# Azure Play
+- name: Configure Azure server
+  hosts: azure
+  become: yes
+
+  tasks:
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+
+    - name: Copy Azure index file
+      copy:
+        src: index-azure.html
+        dest: /var/www/html/index.html
+        mode: '0644'
+
+    - name: Start Nginx
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Check Nginx status
+      command: systemctl is-active nginx
+      register: nginx_status
+
+    - debug:
+        msg: "Azure Nginx status: {{ nginx_status.stdout }}"
