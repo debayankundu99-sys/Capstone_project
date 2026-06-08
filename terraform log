@@ -1,0 +1,711 @@
+terraform show
+# data.aws_ami.ubuntu:
+data "aws_ami" "ubuntu" {
+    architecture          = "x86_64"
+    arn                   = "arn:aws:ec2:us-east-1::image/ami-02013f5b15758f4d4"
+    block_device_mappings = [
+        {
+            device_name  = "/dev/sda1"
+            ebs          = {
+                "delete_on_termination"      = "true"
+                "encrypted"                  = "false"
+                "iops"                       = "0"
+                "snapshot_id"                = "snap-0299b91b79d3c4ba6"
+                "throughput"                 = "0"
+                "volume_initialization_rate" = "0"
+                "volume_size"                = "8"
+                "volume_type"                = "gp2"
+            }
+            no_device    = null
+            virtual_name = null
+        },
+        {
+            device_name  = "/dev/sdb"
+            ebs          = {}
+            no_device    = null
+            virtual_name = "ephemeral0"
+        },
+        {
+            device_name  = "/dev/sdc"
+            ebs          = {}
+            no_device    = null
+            virtual_name = "ephemeral1"
+        },
+    ]
+    boot_mode             = "uefi-preferred"
+    creation_date         = "2026-06-02T07:06:05.000Z"
+    deprecation_time      = "2028-06-02T07:06:05.000Z"
+    description           = "Canonical, Ubuntu, 22.04, amd64 jammy image"
+    ena_support           = true
+    hypervisor            = "xen"
+    id                    = "ami-02013f5b15758f4d4"
+    image_id              = "ami-02013f5b15758f4d4"
+    image_location        = "amazon/ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-20260602"
+    image_owner_alias     = "amazon"
+    image_type            = "machine"
+    imds_support          = null
+    include_deprecated    = false
+    kernel_id             = null
+    last_launched_time    = null
+    most_recent           = true
+    name                  = "ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-20260602"
+    owner_id              = "099720109477"
+    owners                = [
+        "099720109477",
+    ]
+    platform              = null
+    platform_details      = "Linux/UNIX"
+    product_codes         = []
+    public                = true
+    ramdisk_id            = null
+    region                = "us-east-1"
+    root_device_name      = "/dev/sda1"
+    root_device_type      = "ebs"
+    root_snapshot_id      = "snap-0299b91b79d3c4ba6"
+    sriov_net_support     = "simple"
+    state                 = "available"
+    state_reason          = {
+        "code"    = "UNSET"
+        "message" = "UNSET"
+    }
+    tags                  = {}
+    tpm_support           = null
+    usage_operation       = "RunInstances"
+    virtualization_type   = "hvm"
+
+    filter {
+        name   = "name"
+        values = [
+            "ubuntu/images/hvm-ssd/ubuntu-*-amd64-server-*",
+        ]
+    }
+    filter {
+        name   = "virtualization-type"
+        values = [
+            "hvm",
+        ]
+    }
+}
+
+# aws_eip.nat:
+resource "aws_eip" "nat" {
+    allocation_id            = "eipalloc-0020309565544a053"
+    arn                      = "arn:aws:ec2:us-east-1:918740073032:elastic-ip/eipalloc-0020309565544a053"
+    association_id           = null
+    carrier_ip               = null
+    customer_owned_ip        = null
+    customer_owned_ipv4_pool = null
+    domain                   = "vpc"
+    id                       = "eipalloc-0020309565544a053"
+    instance                 = null
+    ipam_pool_id             = null
+    network_border_group     = "us-east-1"
+    network_interface        = null
+    private_dns              = null
+    private_ip               = null
+    ptr_record               = null
+    public_dns               = "ec2-54-166-145-161.compute-1.amazonaws.com"
+    public_ip                = "54.166.145.161"
+    public_ipv4_pool         = "amazon"
+    region                   = "us-east-1"
+    tags_all                 = {}
+}
+
+# aws_instance.app_machine:
+resource "aws_instance" "app_machine" {
+    ami                                  = "ami-02013f5b15758f4d4"
+    arn                                  = "arn:aws:ec2:us-east-1:918740073032:instance/i-0c44aa6a9b4788751"
+    associate_public_ip_address          = true
+    availability_zone                    = "us-east-1a"
+    disable_api_stop                     = false
+    disable_api_termination              = false
+    ebs_optimized                        = false
+    force_destroy                        = false
+    get_password_data                    = false
+    hibernation                          = false
+    host_id                              = null
+    iam_instance_profile                 = null
+    id                                   = "i-0c44aa6a9b4788751"
+    instance_initiated_shutdown_behavior = "stop"
+    instance_lifecycle                   = null
+    instance_state                       = "running"
+    instance_type                        = "t2.micro"
+    ipv6_address_count                   = 0
+    ipv6_addresses                       = []
+    key_name                             = "my-key"
+    monitoring                           = false
+    outpost_arn                          = null
+    password_data                        = null
+    placement_group                      = null
+    placement_group_id                   = null
+    placement_partition_number           = 0
+    primary_network_interface_id         = "eni-0fdb4ecea57ffdddf"
+    private_dns                          = "ip-10-0-1-104.ec2.internal"
+    private_ip                           = "10.0.1.104"
+    public_dns                           = null
+    public_ip                            = "44.212.47.186"
+    region                               = "us-east-1"
+    secondary_private_ips                = []
+    security_groups                      = []
+    source_dest_check                    = true
+    spot_instance_request_id             = null
+    subnet_id                            = "subnet-031bf0d1cb67a2354"
+    tags                                 = {
+        "Name" = "App-Machine"
+    }
+    tags_all                             = {
+        "Name" = "App-Machine"
+    }
+    tenancy                              = "default"
+    user_data_replace_on_change          = false
+    vpc_security_group_ids               = [
+        "sg-0fce09e1f13db7fb1",
+    ]
+
+    capacity_reservation_specification {
+        capacity_reservation_preference = "open"
+    }
+
+    cpu_options {
+        amd_sev_snp           = null
+        core_count            = 1
+        nested_virtualization = null
+        threads_per_core      = 1
+    }
+
+    credit_specification {
+        cpu_credits = "standard"
+    }
+
+    enclave_options {
+        enabled = false
+    }
+
+    maintenance_options {
+        auto_recovery = "default"
+    }
+
+    metadata_options {
+        http_endpoint               = "enabled"
+        http_protocol_ipv6          = "disabled"
+        http_put_response_hop_limit = 1
+        http_tokens                 = "optional"
+        instance_metadata_tags      = "disabled"
+    }
+
+    primary_network_interface {
+        delete_on_termination = true
+        network_interface_id  = "eni-0fdb4ecea57ffdddf"
+    }
+
+    private_dns_name_options {
+        enable_resource_name_dns_a_record    = false
+        enable_resource_name_dns_aaaa_record = false
+        hostname_type                        = "ip-name"
+    }
+
+    root_block_device {
+        delete_on_termination = true
+        device_name           = "/dev/sda1"
+        encrypted             = false
+        iops                  = 100
+        kms_key_id            = null
+        tags                  = {}
+        tags_all              = {}
+        throughput            = 0
+        volume_id             = "vol-0336352e09296e27f"
+        volume_size           = 8
+        volume_type           = "gp2"
+    }
+}
+
+# aws_instance.tools_machine:
+resource "aws_instance" "tools_machine" {
+    ami                                  = "ami-02013f5b15758f4d4"
+    arn                                  = "arn:aws:ec2:us-east-1:918740073032:instance/i-0b6eb777fcdcda49a"
+    associate_public_ip_address          = true
+    availability_zone                    = "us-east-1a"
+    disable_api_stop                     = false
+    disable_api_termination              = false
+    ebs_optimized                        = false
+    force_destroy                        = false
+    get_password_data                    = false
+    hibernation                          = false
+    host_id                              = null
+    iam_instance_profile                 = null
+    id                                   = "i-0b6eb777fcdcda49a"
+    instance_initiated_shutdown_behavior = "stop"
+    instance_lifecycle                   = null
+    instance_state                       = "running"
+    instance_type                        = "t2.micro"
+    ipv6_address_count                   = 0
+    ipv6_addresses                       = []
+    key_name                             = "my-key"
+    monitoring                           = false
+    outpost_arn                          = null
+    password_data                        = null
+    placement_group                      = null
+    placement_group_id                   = null
+    placement_partition_number           = 0
+    primary_network_interface_id         = "eni-0cbf4e45f843d08b9"
+    private_dns                          = "ip-10-0-2-205.ec2.internal"
+    private_ip                           = "10.0.2.205"
+    public_dns                           = null
+    public_ip                            = "98.92.184.54"
+    region                               = "us-east-1"
+    secondary_private_ips                = []
+    security_groups                      = []
+    source_dest_check                    = true
+    spot_instance_request_id             = null
+    subnet_id                            = "subnet-0c2b4aa037eff80ad"
+    tags                                 = {
+        "Name" = "Tools-Machine"
+    }
+    tags_all                             = {
+        "Name" = "Tools-Machine"
+    }
+    tenancy                              = "default"
+    user_data_replace_on_change          = false
+    vpc_security_group_ids               = [
+        "sg-0fce09e1f13db7fb1",
+    ]
+
+    capacity_reservation_specification {
+        capacity_reservation_preference = "open"
+    }
+
+    cpu_options {
+        amd_sev_snp           = null
+        core_count            = 1
+        nested_virtualization = null
+        threads_per_core      = 1
+    }
+
+    credit_specification {
+        cpu_credits = "standard"
+    }
+
+    enclave_options {
+        enabled = false
+    }
+
+    maintenance_options {
+        auto_recovery = "default"
+    }
+
+    metadata_options {
+        http_endpoint               = "enabled"
+        http_protocol_ipv6          = "disabled"
+        http_put_response_hop_limit = 1
+        http_tokens                 = "optional"
+        instance_metadata_tags      = "disabled"
+    }
+
+    primary_network_interface {
+        delete_on_termination = true
+        network_interface_id  = "eni-0cbf4e45f843d08b9"
+    }
+
+    private_dns_name_options {
+        enable_resource_name_dns_a_record    = false
+        enable_resource_name_dns_aaaa_record = false
+        hostname_type                        = "ip-name"
+    }
+
+    root_block_device {
+        delete_on_termination = true
+        device_name           = "/dev/sda1"
+        encrypted             = false
+        iops                  = 100
+        kms_key_id            = null
+        tags                  = {}
+        tags_all              = {}
+        throughput            = 0
+        volume_id             = "vol-07967b93f2e7c072d"
+        volume_size           = 8
+        volume_type           = "gp2"
+    }
+}
+
+# aws_internet_gateway.igw:
+resource "aws_internet_gateway" "igw" {
+    arn      = "arn:aws:ec2:us-east-1:918740073032:internet-gateway/igw-073ace0bf22f88dd0"
+    id       = "igw-073ace0bf22f88dd0"
+    owner_id = "918740073032"
+    region   = "us-east-1"
+    tags_all = {}
+    vpc_id   = "vpc-0543490f3141cd9df"
+}
+
+# aws_nat_gateway.nat:
+resource "aws_nat_gateway" "nat" {
+    allocation_id                      = "eipalloc-0020309565544a053"
+    association_id                     = "eipassoc-07618a3707817b0b7"
+    availability_mode                  = "zonal"
+    connectivity_type                  = "public"
+    id                                 = "nat-00052f9c42ffa7a1d"
+    network_interface_id               = "eni-0e2b88a3513f3ccad"
+    private_ip                         = "10.0.1.223"
+    public_ip                          = "54.166.145.161"
+    region                             = "us-east-1"
+    regional_nat_gateway_address       = []
+    secondary_allocation_ids           = []
+    secondary_private_ip_address_count = 0
+    secondary_private_ip_addresses     = []
+    subnet_id                          = "subnet-031bf0d1cb67a2354"
+    tags_all                           = {}
+    vpc_id                             = "vpc-0543490f3141cd9df"
+}
+
+# aws_route.private_nat:
+resource "aws_route" "private_nat" {
+    carrier_gateway_id          = null
+    core_network_arn            = null
+    destination_cidr_block      = "0.0.0.0/0"
+    destination_ipv6_cidr_block = null
+    destination_prefix_list_id  = null
+    egress_only_gateway_id      = null
+    gateway_id                  = null
+    id                          = "r-rtb-03466ee0bf36333741080289494"
+    instance_id                 = null
+    instance_owner_id           = null
+    local_gateway_id            = null
+    nat_gateway_id              = "nat-00052f9c42ffa7a1d"
+    network_interface_id        = null
+    odb_network_arn             = null
+    origin                      = "CreateRoute"
+    region                      = "us-east-1"
+    route_table_id              = "rtb-03466ee0bf3633374"
+    state                       = "active"
+    transit_gateway_id          = null
+    vpc_endpoint_id             = null
+    vpc_peering_connection_id   = null
+}
+
+# aws_route.public_internet:
+resource "aws_route" "public_internet" {
+    carrier_gateway_id          = null
+    core_network_arn            = null
+    destination_cidr_block      = "0.0.0.0/0"
+    destination_ipv6_cidr_block = null
+    destination_prefix_list_id  = null
+    egress_only_gateway_id      = null
+    gateway_id                  = "igw-073ace0bf22f88dd0"
+    id                          = "r-rtb-0dcf4eb56cfd247731080289494"
+    instance_id                 = null
+    instance_owner_id           = null
+    local_gateway_id            = null
+    nat_gateway_id              = null
+    network_interface_id        = null
+    odb_network_arn             = null
+    origin                      = "CreateRoute"
+    region                      = "us-east-1"
+    route_table_id              = "rtb-0dcf4eb56cfd24773"
+    state                       = "active"
+    transit_gateway_id          = null
+    vpc_endpoint_id             = null
+    vpc_peering_connection_id   = null
+}
+
+# aws_route_table.private:
+resource "aws_route_table" "private" {
+    arn              = "arn:aws:ec2:us-east-1:918740073032:route-table/rtb-03466ee0bf3633374"
+    id               = "rtb-03466ee0bf3633374"
+    owner_id         = "918740073032"
+    propagating_vgws = []
+    region           = "us-east-1"
+    route            = []
+    tags_all         = {}
+    vpc_id           = "vpc-0543490f3141cd9df"
+}
+
+# aws_route_table.public:
+resource "aws_route_table" "public" {
+    arn              = "arn:aws:ec2:us-east-1:918740073032:route-table/rtb-0dcf4eb56cfd24773"
+    id               = "rtb-0dcf4eb56cfd24773"
+    owner_id         = "918740073032"
+    propagating_vgws = []
+    region           = "us-east-1"
+    route            = []
+    tags_all         = {}
+    vpc_id           = "vpc-0543490f3141cd9df"
+}
+
+# aws_route_table_association.private_assoc[0]:
+resource "aws_route_table_association" "private_assoc" {
+    gateway_id     = null
+    id             = "rtbassoc-031387ad3eb8fa7f7"
+    region         = "us-east-1"
+    route_table_id = "rtb-03466ee0bf3633374"
+    subnet_id      = "subnet-0d587596351204fa6"
+}
+
+# aws_route_table_association.private_assoc[1]:
+resource "aws_route_table_association" "private_assoc" {
+    gateway_id     = null
+    id             = "rtbassoc-03df29820ef5b68f1"
+    region         = "us-east-1"
+    route_table_id = "rtb-03466ee0bf3633374"
+    subnet_id      = "subnet-0cc397cc6c538af3f"
+}
+
+# aws_route_table_association.public_assoc[0]:
+resource "aws_route_table_association" "public_assoc" {
+    gateway_id     = null
+    id             = "rtbassoc-0245a938d99af8f68"
+    region         = "us-east-1"
+    route_table_id = "rtb-0dcf4eb56cfd24773"
+    subnet_id      = "subnet-031bf0d1cb67a2354"
+}
+
+# aws_route_table_association.public_assoc[1]:
+resource "aws_route_table_association" "public_assoc" {
+    gateway_id     = null
+    id             = "rtbassoc-023a0deb47ee2c497"
+    region         = "us-east-1"
+    route_table_id = "rtb-0dcf4eb56cfd24773"
+    subnet_id      = "subnet-0c2b4aa037eff80ad"
+}
+
+# aws_security_group.web_sg:
+resource "aws_security_group" "web_sg" {
+    arn                    = "arn:aws:ec2:us-east-1:918740073032:security-group/sg-0fce09e1f13db7fb1"
+    description            = "Managed by Terraform"
+    egress                 = [
+        {
+            cidr_blocks      = [
+                "0.0.0.0/0",
+            ]
+            description      = null
+            from_port        = 0
+            ipv6_cidr_blocks = []
+            prefix_list_ids  = []
+            protocol         = "-1"
+            security_groups  = []
+            self             = false
+            to_port          = 0
+        },
+    ]
+    id                     = "sg-0fce09e1f13db7fb1"
+    ingress                = [
+        {
+            cidr_blocks      = [
+                "0.0.0.0/0",
+            ]
+            description      = null
+            from_port        = 22
+            ipv6_cidr_blocks = []
+            prefix_list_ids  = []
+            protocol         = "tcp"
+            security_groups  = []
+            self             = false
+            to_port          = 22
+        },
+        {
+            cidr_blocks      = [
+                "0.0.0.0/0",
+            ]
+            description      = null
+            from_port        = 80
+            ipv6_cidr_blocks = []
+            prefix_list_ids  = []
+            protocol         = "tcp"
+            security_groups  = []
+            self             = false
+            to_port          = 80
+        },
+    ]
+    name                   = "terraform-20260608065233868300000003"
+    name_prefix            = "terraform-"
+    owner_id               = "918740073032"
+    region                 = "us-east-1"
+    revoke_rules_on_delete = false
+    tags_all               = {}
+    vpc_id                 = "vpc-0543490f3141cd9df"
+}
+
+# aws_subnet.private[0]:
+resource "aws_subnet" "private" {
+    arn                                            = "arn:aws:ec2:us-east-1:918740073032:subnet/subnet-0d587596351204fa6"
+    assign_ipv6_address_on_creation                = false
+    availability_zone                              = "us-east-1b"
+    availability_zone_id                           = "use1-az2"
+    cidr_block                                     = "10.0.3.0/24"
+    customer_owned_ipv4_pool                       = null
+    enable_dns64                                   = false
+    enable_lni_at_device_index                     = 0
+    enable_resource_name_dns_a_record_on_launch    = false
+    enable_resource_name_dns_aaaa_record_on_launch = false
+    id                                             = "subnet-0d587596351204fa6"
+    ipv6_cidr_block                                = null
+    ipv6_cidr_block_association_id                 = null
+    ipv6_native                                    = false
+    map_customer_owned_ip_on_launch                = false
+    map_public_ip_on_launch                        = false
+    outpost_arn                                    = null
+    owner_id                                       = "918740073032"
+    private_dns_hostname_type_on_launch            = "ip-name"
+    region                                         = "us-east-1"
+    tags                                           = {
+        "Name" = "private-subnet-1"
+    }
+    tags_all                                       = {
+        "Name" = "private-subnet-1"
+    }
+    vpc_id                                         = "vpc-0543490f3141cd9df"
+}
+
+# aws_subnet.private[1]:
+resource "aws_subnet" "private" {
+    arn                                            = "arn:aws:ec2:us-east-1:918740073032:subnet/subnet-0cc397cc6c538af3f"
+    assign_ipv6_address_on_creation                = false
+    availability_zone                              = "us-east-1b"
+    availability_zone_id                           = "use1-az2"
+    cidr_block                                     = "10.0.4.0/24"
+    customer_owned_ipv4_pool                       = null
+    enable_dns64                                   = false
+    enable_lni_at_device_index                     = 0
+    enable_resource_name_dns_a_record_on_launch    = false
+    enable_resource_name_dns_aaaa_record_on_launch = false
+    id                                             = "subnet-0cc397cc6c538af3f"
+    ipv6_cidr_block                                = null
+    ipv6_cidr_block_association_id                 = null
+    ipv6_native                                    = false
+    map_customer_owned_ip_on_launch                = false
+    map_public_ip_on_launch                        = false
+    outpost_arn                                    = null
+    owner_id                                       = "918740073032"
+    private_dns_hostname_type_on_launch            = "ip-name"
+    region                                         = "us-east-1"
+    tags                                           = {
+        "Name" = "private-subnet-2"
+    }
+    tags_all                                       = {
+        "Name" = "private-subnet-2"
+    }
+    vpc_id                                         = "vpc-0543490f3141cd9df"
+}
+
+# aws_subnet.public[0]:
+resource "aws_subnet" "public" {
+    arn                                            = "arn:aws:ec2:us-east-1:918740073032:subnet/subnet-031bf0d1cb67a2354"
+    assign_ipv6_address_on_creation                = false
+    availability_zone                              = "us-east-1a"
+    availability_zone_id                           = "use1-az1"
+    cidr_block                                     = "10.0.1.0/24"
+    customer_owned_ipv4_pool                       = null
+    enable_dns64                                   = false
+    enable_lni_at_device_index                     = 0
+    enable_resource_name_dns_a_record_on_launch    = false
+    enable_resource_name_dns_aaaa_record_on_launch = false
+    id                                             = "subnet-031bf0d1cb67a2354"
+    ipv6_cidr_block                                = null
+    ipv6_cidr_block_association_id                 = null
+    ipv6_native                                    = false
+    map_customer_owned_ip_on_launch                = false
+    map_public_ip_on_launch                        = true
+    outpost_arn                                    = null
+    owner_id                                       = "918740073032"
+    private_dns_hostname_type_on_launch            = "ip-name"
+    region                                         = "us-east-1"
+    tags                                           = {
+        "Name" = "public-subnet-1"
+    }
+    tags_all                                       = {
+        "Name" = "public-subnet-1"
+    }
+    vpc_id                                         = "vpc-0543490f3141cd9df"
+}
+
+# aws_subnet.public[1]:
+resource "aws_subnet" "public" {
+    arn                                            = "arn:aws:ec2:us-east-1:918740073032:subnet/subnet-0c2b4aa037eff80ad"
+    assign_ipv6_address_on_creation                = false
+    availability_zone                              = "us-east-1a"
+    availability_zone_id                           = "use1-az1"
+    cidr_block                                     = "10.0.2.0/24"
+    customer_owned_ipv4_pool                       = null
+    enable_dns64                                   = false
+    enable_lni_at_device_index                     = 0
+    enable_resource_name_dns_a_record_on_launch    = false
+    enable_resource_name_dns_aaaa_record_on_launch = false
+    id                                             = "subnet-0c2b4aa037eff80ad"
+    ipv6_cidr_block                                = null
+    ipv6_cidr_block_association_id                 = null
+    ipv6_native                                    = false
+    map_customer_owned_ip_on_launch                = false
+    map_public_ip_on_launch                        = true
+    outpost_arn                                    = null
+    owner_id                                       = "918740073032"
+    private_dns_hostname_type_on_launch            = "ip-name"
+    region                                         = "us-east-1"
+    tags                                           = {
+        "Name" = "public-subnet-2"
+    }
+    tags_all                                       = {
+        "Name" = "public-subnet-2"
+    }
+    vpc_id                                         = "vpc-0543490f3141cd9df"
+}
+
+# aws_vpc.main:
+resource "aws_vpc" "main" {
+    arn                                  = "arn:aws:ec2:us-east-1:918740073032:vpc/vpc-0543490f3141cd9df"
+    assign_generated_ipv6_cidr_block     = false
+    cidr_block                           = "10.0.0.0/16"
+    default_network_acl_id               = "acl-0c67e191c5e6e201c"
+    default_route_table_id               = "rtb-0db6e53567d2a5e4b"
+    default_security_group_id            = "sg-096bce9178cd2074e"
+    dhcp_options_id                      = "dopt-0a5908a20f3736a1d"
+    enable_dns_hostnames                 = false
+    enable_dns_support                   = true
+    enable_network_address_usage_metrics = false
+    id                                   = "vpc-0543490f3141cd9df"
+    instance_tenancy                     = "default"
+    ipv6_association_id                  = null
+    ipv6_cidr_block                      = null
+    ipv6_cidr_block_network_border_group = null
+    ipv6_ipam_pool_id                    = null
+    ipv6_netmask_length                  = 0
+    main_route_table_id                  = "rtb-0db6e53567d2a5e4b"
+    owner_id                             = "918740073032"
+    region                               = "us-east-1"
+    tags                                 = {
+        "Name" = "main-vpc"
+    }
+    tags_all                             = {
+        "Name" = "main-vpc"
+    }
+}
+
+# tls_private_key.key:
+resource "tls_private_key" "key" {
+    algorithm                     = "RSA"
+    ecdsa_curve                   = "P224"
+    id                            = "d2aca77b6ea6ffd1a0e584398a8e34a92eaada95"
+    private_key_openssh           = (sensitive value)
+    private_key_pem               = (sensitive value)
+    private_key_pem_pkcs8         = (sensitive value)
+    public_key_fingerprint_md5    = "b2:b8:7b:f6:21:3d:ec:d1:d6:7d:31:32:4b:c9:40:2e"
+    public_key_fingerprint_sha256 = "SHA256:mD7SeXxdvWgDY/E8O6kDBRuPaQnHbPgd8CVrlhabbUQ"
+    public_key_openssh            = <<-EOT
+        ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDIX3Ip0i7Y37kyudx4BEAxARfqqy2uOR/ria+NCzj8sOKRnagWrDuF5gFCoJPQlhIYieFEW0s8DFLQ4kPpDwJFcAMco+wv6y2rqWT0OCNouTb1b2A/HW735SSkfnW4UhlQ4XqFLqZOvyM3q8SThCGv6L694+wkTgyERrFpaPlE8rftqoiC4dE2IQS+PXOEBAOTuQO1F43Jqgnr4zZmzjsyXcSWCAXY1c+ccuGFFMuM0P2tXPDWqgZ4FRy1xHwhR/miswNRB+sgKq6jzhCAoBDBorVKTuIkwQ1HX2kdtoFZNaKV41QuyjldTB5pJ7qKUQvfNvDvGydj5SnKRaDOEOHl80W/mPi9zHP32vrNXqkz02P0G3VIUUeHuDlA5oUoGf0ByfpLGe/i4DrgJ0f3cw0x2ovft1jDnrkhljFgLcjqqrBg+89P6fMENCBL8/YlRCqVc1+6zJ2RQKAkSWTsy1kCOpcyOFjRqSoOS1oeWYB0o5OnwPf4038eXPeLI9qBGMHuvMaZKiXOBIVEp/zZK/7Ft9EdjWyct0YEPHTmlhOORYig+TCQ0nNkBnDq3bRYEJe/k7ICtuc/7/Egm7ZWJEiloyXa6Wl8HoIGJLviKlJjCfyW9axdD8RrCyI2h9xHKNh4vAW8JkPu3XeQDX9JU2Qzvo9ECMmN9Eg0Akl4f/E6hw==
+    EOT
+    public_key_pem                = <<-EOT
+        -----BEGIN PUBLIC KEY-----
+        MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAyF9yKdIu2N+5MrnceARA
+        MQEX6qstrjkf64mvjQs4/LDikZ2oFqw7heYBQqCT0JYSGInhRFtLPAxS0OJD6Q8C
+        RXADHKPsL+stq6lk9DgjaLk29W9gPx1u9+UkpH51uFIZUOF6hS6mTr8jN6vEk4Qh
+        r+i+vePsJE4MhEaxaWj5RPK37aqIguHRNiEEvj1zhAQDk7kDtReNyaoJ6+M2Zs47
+        Ml3ElggF2NXPnHLhhRTLjND9rVzw1qoGeBUctcR8IUf5orMDUQfrICquo84QgKAQ
+        waK1Sk7iJMENR19pHbaBWTWileNULso5XUweaSe6ilEL3zbw7xsnY+UpykWgzhDh
+        5fNFv5j4vcxz99r6zV6pM9Nj9Bt1SFFHh7g5QOaFKBn9Acn6Sxnv4uA64CdH93MN
+        MdqL37dYw565IZYxYC3I6qqwYPvPT+nzBDQgS/P2JUQqlXNfusydkUCgJElk7MtZ
+        AjqXMjhY0akqDktaHlmAdKOTp8D3+NN/Hlz3iyPagRjB7rzGmSolzgSFRKf82Sv+
+        xbfRHY1snLdGBDx05pYTjkWIoPkwkNJzZAZw6t20WBCXv5OyArbnP+/xIJu2ViRI
+        paMl2ulpfB6CBiS74ipSYwn8lvWsXQ/EawsiNofcRyjYeLwFvCZD7t13kA1/SVNk
+        M76PRAjJjfRINAJJeH/xOocCAwEAAQ==
+        -----END PUBLIC KEY-----
+    EOT
+    rsa_bits                      = 4096
+}
